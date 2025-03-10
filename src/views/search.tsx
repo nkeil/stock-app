@@ -47,7 +47,7 @@ export function SearchPage(props: Props) {
         placeholder={placeholders[placeholderIndex]}
         onSearch={onSearch}
         className={clsx({
-          "translate-y-[-350px] duration-1000": animateSearch,
+          "translate-y-[-351px] duration-1000": animateSearch,
         })}
       />
 

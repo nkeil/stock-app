@@ -4,9 +4,8 @@ export interface Asset {
   name: string;
   price: number;
   changePercent: number;
-  aiInsight?: string;
-  volume?: string;
-  marketCap?: string;
+  volume: string;
+  marketCap: string;
   details?: string;
 }
 
@@ -27,7 +26,8 @@ export const mockStocks: Asset[] = [
     name: "Apple Inc.",
     price: 150.25,
     changePercent: +5.2,
-    aiInsight: "Strong demand for new product lineup.",
+    volume: "35M",
+    marketCap: "2.8T",
   },
   {
     id: 2,
@@ -35,7 +35,8 @@ export const mockStocks: Asset[] = [
     name: "Tesla, Inc.",
     price: 710.5,
     changePercent: -2.4,
-    aiInsight: "Recent volatility due to supply chain concerns.",
+    volume: "20M",
+    marketCap: "800B",
   },
   {
     id: 3,
@@ -43,7 +44,8 @@ export const mockStocks: Asset[] = [
     name: "Amazon.com, Inc.",
     price: 3300.75,
     changePercent: +0.5,
-    aiInsight: "Steady growth in e-commerce and cloud services.",
+    volume: "15M",
+    marketCap: "1.7T",
   },
   {
     id: 4,
@@ -51,7 +53,8 @@ export const mockStocks: Asset[] = [
     name: "Alphabet Inc.",
     price: 2835.1,
     changePercent: +3.1,
-    aiInsight: "Positive outlook on ad revenue and AI ventures.",
+    volume: "22M",
+    marketCap: "1.9T",
   },
   {
     id: 5,
@@ -59,11 +62,9 @@ export const mockStocks: Asset[] = [
     name: "Netflix, Inc.",
     price: 550.1,
     changePercent: -1.1,
-    aiInsight: "Subscriber growth slowing compared to last quarter.",
+    volume: "8M",
+    marketCap: "250B",
   },
-];
-
-export const tableStocks: Asset[] = [
   {
     id: 6,
     ticker: "MSFT",
