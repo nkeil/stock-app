@@ -15,6 +15,8 @@
 
   --color-border: var(--border);
   --color-ring: var(--ring);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
 
   @keyframes neon-glow {
     0% {
@@ -88,6 +90,8 @@
   --foreground: oklch(0.985 0 0);
   --border: oklch(0.274 0.006 286.033);
   --ring: oklch(0.442 0.017 285.786);
+  --popover: oklch(0.141 0.005 285.823);
+  --popover-foreground: oklch(0.985 0 0);
 }
 
 @layer base {

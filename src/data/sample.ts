@@ -9,7 +9,7 @@ export interface Asset {
   details?: string;
 }
 
-export const generateIncreasingStockData = (length = 20) => {
+export const generateIncreasingPriceData = (length = 20) => {
   const rawData = Array.from({ length }, (_, i) =>
     Math.floor(Math.random() * 100 * (10 / (-i + 27))),
   );
@@ -19,7 +19,7 @@ export const generateIncreasingStockData = (length = 20) => {
   return rawData.map((value) => Math.round((value / maxValue) * 100));
 };
 
-export const mockStocks: Asset[] = [
+export const mockAssets: Asset[] = [
   {
     id: 1,
     ticker: "AAPL",

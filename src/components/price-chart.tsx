@@ -5,7 +5,7 @@ interface Props {
   className?: string;
 }
 
-export function StockChart({ data, className }: Props) {
+export function PriceChart({ data, className }: Props) {
   return (
     <div className={cn("rounded-lg p-5 w-fit", className)}>
       <div className="w-[158px] h-[100px]">

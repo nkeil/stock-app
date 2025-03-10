@@ -1,15 +1,9 @@
 "use client";
 
 import { useState, useRef } from "react";
-import { mockStocks } from "../data/sample";
+import { Asset, mockAssets } from "../data/sample";
 import { BsChevronDown } from "react-icons/bs";
 
-import {
-  Accordion,
-  AccordionItem,
-  AccordionTrigger,
-  AccordionContent,
-} from "@/components/ui/accordion";
 import {
   Table,
   TableBody,
@@ -27,7 +21,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import { StockCard } from "@/components/stock-card";
+import { AssetCard } from "@/components/asset-card";
 import { cn } from "@/lib/utils";
 
 interface Props {
@@ -51,6 +45,10 @@ export function ResultsPage(props: Props) {
     }, 0);
   };
 
+  const onClickTableRow = (asset: Asset) => {
+    alert(`Redirecting to asset page for: ${asset.ticker}`);
+  };
+
   return (
     <div className="min-h-screen p-4 flex flex-col">
       {/* search bar */}
@@ -62,9 +60,9 @@ export function ResultsPage(props: Props) {
       <div className="mb-8 mt-32">
         <Carousel className="w-lg m-auto animate-in fade-in slide-in-from-bottom-8 duration-1000">
           <CarouselContent>
-            {mockStocks.map((stock) => (
-              <CarouselItem key={stock.ticker}>
-                <StockCard asset={stock} />
+            {mockAssets.map((asset) => (
+              <CarouselItem key={asset.ticker}>
+                <AssetCard asset={asset} />
               </CarouselItem>
             ))}
           </CarouselContent>
@@ -106,26 +104,27 @@ export function ResultsPage(props: Props) {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {[...mockStocks, ...mockStocks, ...mockStocks].map((stock, i) => (
+            {[...mockAssets, ...mockAssets, ...mockAssets].map((asset, i) => (
               <TableRow
                 key={i}
-                className="bg-card/40 hover:bg-card/60 transition-colors cursor-pointer rounded-lg overflow-hidden border-b-0"
+                onClick={() => onClickTableRow(asset)}
+                className="bg-card/40 hover:bg-zinc-800/60 transition-all duration-200 cursor-pointer rounded-lg overflow-hidden border-b-0 active:scale-[0.99] hover:scale-[1.01]"
               >
-                <TableCell className="text-md text-primary">{stock.ticker}</TableCell>
-                <TableCell className="text-md">${stock.price.toFixed(2)}</TableCell>
+                <TableCell className="text-md text-primary">{asset.ticker}</TableCell>
+                <TableCell className="text-md">${asset.price.toFixed(2)}</TableCell>
                 <TableCell
                   className={cn(
                     "text-md",
-                    stock.changePercent >= 0 ? "text-emerald-400" : "text-rose-400",
+                    asset.changePercent >= 0 ? "text-emerald-400" : "text-rose-400",
                   )}
                 >
-                  {stock.changePercent >= 0 ? "+" : ""}
-                  {stock.changePercent.toFixed(2)}%
+                  {asset.changePercent >= 0 ? "+" : ""}
+                  {asset.changePercent.toFixed(2)}%
                 </TableCell>
                 <TableCell className="text-md text-gray-400">
-                  {stock.volume?.toLocaleString()}
+                  {asset.volume?.toLocaleString()}
                 </TableCell>
-                <TableCell className="text-md text-gray-400">{stock.marketCap}</TableCell>
+                <TableCell className="text-md text-gray-400">{asset.marketCap}</TableCell>
               </TableRow>
             ))}
           </TableBody>

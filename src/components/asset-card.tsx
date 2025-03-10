@@ -1,6 +1,6 @@
-import { StockChart } from "./stock-chart";
+import { PriceChart } from "./price-chart";
 import { Card } from "./ui/card";
-import { Asset, generateIncreasingStockData } from "@/data/sample";
+import { Asset, generateIncreasingPriceData } from "@/data/sample";
 import {
   HiPlusCircle,
   HiCheckCircle,
@@ -17,9 +17,9 @@ interface Props {
   asset: Asset;
 }
 
-export function StockCard({ asset }: Props) {
+export function AssetCard({ asset }: Props) {
   const [isAdded, setIsAdded] = useState(false);
-  const [stockData] = useState(generateIncreasingStockData());
+  const [stockData] = useState(generateIncreasingPriceData());
   const [command, setCommand] = useState("");
 
   const inputRef = useRef<HTMLInputElement>(null);
@@ -102,7 +102,7 @@ export function StockCard({ asset }: Props) {
 
         <div className="flex justify-around px-4 h-full">
           <div className="w-2/3">
-            <StockChart data={stockData} className="m-auto" />
+            <PriceChart data={stockData} className="m-auto" />
           </div>
           <div className="w-1/3 flex flex-col gap-2 pl-4">
             <div className="text-white/80">{asset.name}</div>
