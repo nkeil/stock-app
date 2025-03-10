@@ -1,7 +1,7 @@
 "use client";
 
-import { Results } from "@/views/results";
-import { Search } from "@/views/search";
+import { ResultsPage } from "@/views/results";
+import { SearchPage } from "@/views/search";
 import { useState } from "react";
 
 export default function Home() {
@@ -15,6 +15,8 @@ export default function Home() {
   };
 
   return (
-    <div>{stage === "search" ? <Search onSearch={onSearch} /> : <Results query={query} />}</div>
+    <div>
+      {stage === "search" ? <SearchPage onSearch={onSearch} /> : <ResultsPage query={query} />}
+    </div>
   );
 }

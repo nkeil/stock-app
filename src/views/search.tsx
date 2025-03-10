@@ -14,7 +14,7 @@ interface Props {
   onSearch: (query: string) => void;
 }
 
-export function Search(props: Props) {
+export function SearchPage(props: Props) {
   const [placeholderIndex, setPlaceholderIndex] = useState(0);
   const [animateSearch, setAnimateSearch] = useState(false);
 
@@ -33,19 +33,20 @@ export function Search(props: Props) {
 
   return (
     <div className="flex flex-col justify-center items-center min-h-screen">
-      <h1
-        className={clsx("text-5xl font-bold mb-10 animate-neon-glow", {
-          "transition-opacity opacity-0 duration-300": animateSearch,
-        })}
-      >
-        What are you looking for?
-      </h1>
+      <span className="animate-hover">
+        <h1
+          className={clsx("text-5xl font-bold mb-10", "animate-neon-glow", {
+            "transition-opacity opacity-0 duration-300": animateSearch,
+          })}
+        >
+          What are you looking for?
+        </h1>
+      </span>
 
       <SearchBar
         placeholder={placeholders[placeholderIndex]}
         onSearch={onSearch}
         className={clsx({
-          // "hover:shadow-[0_0_10px_#777] hover:translate-y-[-2px] duration-300": !animateSearch,
           "translate-y-[-350px] duration-1000": animateSearch,
         })}
       />

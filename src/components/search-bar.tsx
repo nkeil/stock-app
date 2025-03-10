@@ -3,29 +3,30 @@ import { FormEventHandler, useEffect, useState } from "react";
 import { IoSend } from "react-icons/io5";
 
 interface Props {
+  query?: string;
   className?: string;
-  placeholder: string;
+  placeholder?: string;
   onSearch: (query: string) => void;
 }
 
-export const SearchBar = ({ placeholder, onSearch, className }: Props) => {
-  const [query, setQuery] = useState("");
-  const [prevPlaceholder, setPrevPlaceholder] = useState(placeholder);
+export const SearchBar = (props: Props) => {
+  const [query, setQuery] = useState(props.query ?? "");
+  const [prevPlaceholder, setPrevPlaceholder] = useState(props.placeholder ?? "");
   const [animatePlaceholder, setAnimatePlaceholder] = useState(false);
 
   useEffect(() => {
     // play animation for 0.5s
     setAnimatePlaceholder(true);
     setTimeout(() => {
-      setPrevPlaceholder(placeholder);
+      setPrevPlaceholder(props.placeholder ?? "");
       setAnimatePlaceholder(false);
     }, 500);
-  }, [placeholder]);
+  }, [props.placeholder]);
 
   const onSubmit: FormEventHandler = (e) => {
     e.preventDefault();
     if (!query) return;
-    onSearch(query);
+    props.onSearch(query);
   };
 
   return (
@@ -33,7 +34,7 @@ export const SearchBar = ({ placeholder, onSearch, className }: Props) => {
       onSubmit={onSubmit}
       className={clsx(
         "relative overflow-hidden flex w-full max-w-xl bg-white/10 p-2 rounded-md transition-all",
-        className,
+        props.className,
       )}
     >
       <input
@@ -48,7 +49,7 @@ export const SearchBar = ({ placeholder, onSearch, className }: Props) => {
             "animate-slide-from-left": animatePlaceholder,
           })}
         >
-          {placeholder}
+          {props.placeholder}
         </label>
       )}
       {!query && animatePlaceholder && (
