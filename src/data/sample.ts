@@ -1,27 +1,38 @@
-interface Asset {
+export interface Asset {
   id: number;
   ticker: string;
-  companyName: string;
+  name: string;
   price: number;
   changePercent: number;
   aiInsight?: string;
   volume?: string;
   marketCap?: string;
+  details?: string;
 }
 
-export const featuredAssets: Asset[] = [
+export const generateIncreasingStockData = (length = 20) => {
+  const rawData = Array.from({ length }, (_, i) =>
+    Math.floor(Math.random() * 100 * (10 / (-i + 27))),
+  );
+
+  // Normalize
+  const maxValue = Math.max(...rawData);
+  return rawData.map((value) => Math.round((value / maxValue) * 100));
+};
+
+export const mockStocks: Asset[] = [
   {
     id: 1,
     ticker: "AAPL",
-    companyName: "Apple Inc.",
+    name: "Apple Inc.",
     price: 150.25,
-    changePercent: +1.2,
+    changePercent: +5.2,
     aiInsight: "Strong demand for new product lineup.",
   },
   {
     id: 2,
     ticker: "TSLA",
-    companyName: "Tesla, Inc.",
+    name: "Tesla, Inc.",
     price: 710.5,
     changePercent: -2.4,
     aiInsight: "Recent volatility due to supply chain concerns.",
@@ -29,7 +40,7 @@ export const featuredAssets: Asset[] = [
   {
     id: 3,
     ticker: "AMZN",
-    companyName: "Amazon.com, Inc.",
+    name: "Amazon.com, Inc.",
     price: 3300.75,
     changePercent: +0.5,
     aiInsight: "Steady growth in e-commerce and cloud services.",
@@ -37,7 +48,7 @@ export const featuredAssets: Asset[] = [
   {
     id: 4,
     ticker: "GOOGL",
-    companyName: "Alphabet Inc.",
+    name: "Alphabet Inc.",
     price: 2835.1,
     changePercent: +3.1,
     aiInsight: "Positive outlook on ad revenue and AI ventures.",
@@ -45,7 +56,7 @@ export const featuredAssets: Asset[] = [
   {
     id: 5,
     ticker: "NFLX",
-    companyName: "Netflix, Inc.",
+    name: "Netflix, Inc.",
     price: 550.1,
     changePercent: -1.1,
     aiInsight: "Subscriber growth slowing compared to last quarter.",
@@ -56,7 +67,7 @@ export const tableStocks: Asset[] = [
   {
     id: 6,
     ticker: "MSFT",
-    companyName: "Microsoft Corporation",
+    name: "Microsoft Corporation",
     price: 290.3,
     changePercent: +2.0,
     volume: "25M",
@@ -65,7 +76,7 @@ export const tableStocks: Asset[] = [
   {
     id: 7,
     ticker: "NVDA",
-    companyName: "NVIDIA Corporation",
+    name: "NVIDIA Corporation",
     price: 220.1,
     changePercent: +4.2,
     volume: "12M",
@@ -74,7 +85,7 @@ export const tableStocks: Asset[] = [
   {
     id: 8,
     ticker: "INTC",
-    companyName: "Intel Corporation",
+    name: "Intel Corporation",
     price: 53.25,
     changePercent: -0.8,
     volume: "30M",
@@ -83,7 +94,7 @@ export const tableStocks: Asset[] = [
   {
     id: 9,
     ticker: "META",
-    companyName: "Meta Platforms, Inc.",
+    name: "Meta Platforms, Inc.",
     price: 330.12,
     changePercent: +1.8,
     volume: "18M",

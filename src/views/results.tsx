@@ -1,202 +1,125 @@
 "use client";
 
-import { featuredAssets, tableStocks } from "@/data/sample";
-import React, { ChangeEvent, CSSProperties, useState } from "react";
+import { useState } from "react";
+import { mockStocks } from "../data/sample";
+
+import {
+  Accordion,
+  AccordionItem,
+  AccordionTrigger,
+  AccordionContent,
+} from "@/components/ui/accordion";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { SearchBar } from "@/components/search-bar";
+
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
+import { StockCard } from "@/components/stock-card";
 
 interface Props {
   query: string;
 }
 
-export function Results({ query }: Props) {
-  const [searchQuery, setSearchQuery] = useState(query);
-  const [currentIndex, setCurrentIndex] = useState(0);
+export function ResultsPage(props: Props) {
+  const [query, setQuery] = useState(props.query);
 
-  const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setSearchQuery(e.target.value);
+  const onSearch = (newQuery: string) => {
+    console.log(`Searching for: ${newQuery}`);
+    setQuery(newQuery);
   };
-
-  const filteredFeaturedStocks = featuredAssets.filter((stock) => {
-    const query = searchQuery.toLowerCase();
-    return (
-      stock.ticker.toLowerCase().includes(query) ||
-      stock.companyName.toLowerCase().includes(query) ||
-      stock.aiInsight?.toLowerCase().includes(query)
-    );
-  });
-
-  const handlePrev = () => {
-    setCurrentIndex((prevIndex) =>
-      prevIndex === 0 ? filteredFeaturedStocks.length - 1 : prevIndex - 1,
-    );
-  };
-
-  const handleNext = () => {
-    setCurrentIndex((prevIndex) =>
-      prevIndex === filteredFeaturedStocks.length - 1 ? 0 : prevIndex + 1,
-    );
-  };
-
-  const currentFeaturedStock =
-    filteredFeaturedStocks.length > 0 ? filteredFeaturedStocks[currentIndex] : null;
 
   return (
-    <div className="App" style={styles.appContainer}>
-      <header style={styles.header}>
-        <h1 style={styles.title}>AI-Integrated Stock Trading</h1>
-        <div style={styles.searchContainer}>
-          <input
-            type="text"
-            placeholder="Search stocks or query (e.g., 'tech stocks')..."
-            value={searchQuery}
-            onChange={handleSearchChange}
-            style={styles.searchInput}
-          />
-        </div>
-      </header>
+    <div className="min-h-screen p-4 flex flex-col">
+      <div className="mt-6 mb-6">
+        <SearchBar query={query} onSearch={onSearch} className="m-auto" />
+      </div>
 
-      <main style={styles.mainSection}>
-        <section style={styles.carouselSection}>
-          <h2>Featured Stocks</h2>
-          {currentFeaturedStock ? (
-            <div style={styles.carouselContainer}>
-              <button style={styles.navButton} onClick={handlePrev}>
-                &lt;
-              </button>
-              <div style={styles.carouselCard}>
-                <h3>{currentFeaturedStock.ticker}</h3>
-                <p>{currentFeaturedStock.companyName}</p>
-                <p>
-                  Price: <strong>${currentFeaturedStock.price.toFixed(2)}</strong>
-                </p>
-                <p
-                  style={{
-                    color: currentFeaturedStock.changePercent >= 0 ? "green" : "red",
-                  }}
+      <div className="mb-8">
+        <Carousel className="w-lg m-auto animate-in">
+          <CarouselContent>
+            {mockStocks.map((stock) => (
+              <CarouselItem key={stock.ticker}>
+                <StockCard asset={stock} />
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+          <CarouselPrevious />
+          <CarouselNext />
+        </Carousel>
+      </div>
+
+      {/* Expandable Table Section */}
+      <div className="mb-8">
+        <h2 className="text-2xl font-semibold mb-3 animate-neon">Detailed View</h2>
+        <p className="text-[#8af] mb-3">Expand rows to see more info on each stock.</p>
+
+        <Accordion type="single" collapsible className="w-full">
+          <Table className="w-full border-separate border-spacing-y-2">
+            <TableHeader>
+              <TableRow className="[&>th]:bg-white/10 [&>th]:border-b [&>th]:border-[#0ff]">
+                <TableHead className="p-2">Symbol</TableHead>
+                <TableHead className="p-2">Price</TableHead>
+                <TableHead className="p-2">% Change</TableHead>
+                <TableHead className="p-2">Volume</TableHead>
+                <TableHead className="p-2">Market Cap</TableHead>
+              </TableRow>
+            </TableHeader>
+
+            <TableBody>
+              {mockStocks.map((stock, index) => (
+                // Use the index or a stable unique ID as the AccordionItem value
+                // <AccordionItem value={`item-${index}`} key={stock.ticker}>
+                // <AccordionTrigger asChild>
+                <TableRow
+                  className="
+                        bg-white/5 
+                        hover:bg-white/10 
+                        transition-colors 
+                        cursor-pointer
+                      "
                 >
-                  {currentFeaturedStock.changePercent >= 0 ? "+" : ""}
-                  {currentFeaturedStock.changePercent}%
-                </p>
-                <p style={{ fontStyle: "italic" }}>AI Insight: {currentFeaturedStock.aiInsight}</p>
-              </div>
-              <button style={styles.navButton} onClick={handleNext}>
-                &gt;
-              </button>
-            </div>
-          ) : (
-            <p>No stocks found for your query.</p>
-          )}
-        </section>
-
-        <section style={styles.tableSection}>
-          <h2>All Results</h2>
-          <table style={styles.table}>
-            <thead>
-              <tr>
-                <th>Ticker</th>
-                <th>Company Name</th>
-                <th>Price</th>
-                <th>Change (%)</th>
-                <th>Volume</th>
-                <th>Market Cap</th>
-              </tr>
-            </thead>
-            <tbody>
-              {tableStocks.map((stock) => {
-                const isPositive = stock.changePercent >= 0;
-                return (
-                  <tr key={stock.id}>
-                    <td>{stock.ticker}</td>
-                    <td>{stock.companyName}</td>
-                    <td>${stock.price.toFixed(2)}</td>
-                    <td style={{ color: isPositive ? "green" : "red" }}>
-                      {isPositive ? "+" : ""}
-                      {stock.changePercent}%
-                    </td>
-                    <td>{stock.volume}</td>
-                    <td>{stock.marketCap}</td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </section>
-      </main>
-
-      <footer style={styles.footer}>
-        <p>&copy; {new Date().getFullYear()} AI Trading Platform. All Rights Reserved.</p>
-      </footer>
+                  <TableCell className="p-2 font-semibold text-[#0ff]">{stock.ticker}</TableCell>
+                  <TableCell className="p-2">${stock.price.toFixed(2)}</TableCell>
+                  <TableCell
+                    className={`p-2 ${stock.changePercent >= 0 ? "text-green-400" : "text-red-400"}`}
+                  >
+                    {stock.changePercent >= 0 ? "+" : ""}
+                    {stock.changePercent.toFixed(2)}%
+                  </TableCell>
+                  <TableCell className="p-2">{stock.volume?.toLocaleString()}</TableCell>
+                  <TableCell className="p-2">{stock.marketCap}</TableCell>
+                </TableRow>
+                // </AccordionTrigger>
+                /* <AccordionContent>
+                    <TableRow
+                      className="
+                        bg-white/10
+                        transition-colors
+                      "
+                    >
+                      <TableCell colSpan={5} className="p-4 text-white/80">
+                        {stock.details}
+                      </TableCell>
+                    </TableRow>
+                  </AccordionContent> */
+                // {/* </AccordionItem> */}
+              ))}
+            </TableBody>
+          </Table>
+        </Accordion>
+      </div>
     </div>
   );
 }
-
-const styles: Record<string, CSSProperties> = {
-  appContainer: {
-    fontFamily: "Arial, sans-serif",
-    margin: 0,
-    padding: 0,
-    maxWidth: "1200px",
-    marginLeft: "auto",
-    marginRight: "auto",
-  },
-  header: {
-    backgroundColor: "#101F33",
-    color: "#FFF",
-    display: "flex",
-    flexDirection: "column",
-    padding: "1rem",
-    alignItems: "center",
-  },
-  title: {
-    margin: 0,
-    fontSize: "1.8rem",
-  },
-  searchContainer: {
-    marginTop: "1rem",
-    width: "100%",
-    maxWidth: "600px",
-  },
-  searchInput: {
-    width: "100%",
-    padding: "0.5rem",
-    fontSize: "1rem",
-  },
-  mainSection: {
-    padding: "1rem",
-  },
-  carouselSection: {
-    marginBottom: "2rem",
-  },
-  carouselContainer: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    marginTop: "1rem",
-  },
-  carouselCard: {
-    backgroundColor: "#F5F5F5",
-    padding: "1rem",
-    margin: "0 1rem",
-    width: "250px",
-    textAlign: "center",
-    borderRadius: "5px",
-  },
-  navButton: {
-    fontSize: "1.5rem",
-    cursor: "pointer",
-    background: "none",
-    border: "none",
-  },
-  tableSection: {
-    overflowX: "auto",
-  },
-  table: {
-    width: "100%",
-    borderCollapse: "collapse",
-  },
-  footer: {
-    backgroundColor: "#F0F0F0",
-    textAlign: "center",
-    padding: "1rem",
-    marginTop: "2rem",
-  },
-};
